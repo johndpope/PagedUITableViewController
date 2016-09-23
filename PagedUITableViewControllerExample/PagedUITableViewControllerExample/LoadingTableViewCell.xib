@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="LoadingTableViewCell" selectionStyle="default" indentationWidth="10" rowHeight="102" id="KGk-i7-Jjw" customClass="LoadingTableViewCell" customModule="PagedUITableViewControllerExample" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="102"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <frame key="frameInset" width="320" height="101"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="PqC-h5-j3R">
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="iIY-ye-kOC"/>
+                        </constraints>
+                    </activityIndicatorView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="PqC-h5-j3R" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="EhL-zr-Sca"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="PqC-h5-j3R" secondAttribute="bottom" constant="20" id="NvG-AP-ocV"/>
+                    <constraint firstItem="PqC-h5-j3R" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="20" id="iN0-ei-bLV"/>
+                    <constraint firstItem="PqC-h5-j3R" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="kY3-qr-6XR"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="activityIndicator" destination="PqC-h5-j3R" id="6z8-JS-121"/>
+            </connections>
+            <point key="canvasLocation" x="26" y="23"/>
+        </tableViewCell>
+    </objects>
+</document>

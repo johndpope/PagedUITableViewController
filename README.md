@@ -1,6 +1,6 @@
 # PagedUITableViewController
 
-[![CI Status](http://img.shields.io/travis/Sergio García/PagedUITableViewController.svg?style=flat)](https://travis-ci.org/Sergio García/PagedUITableViewController)
+[![CI Status](http://img.shields.io/travis/sergiog90/PagedUITableViewController.svg?style=flat)](https://travis-ci.org/sergiog90/PagedUITableViewController)
 [![Version](https://img.shields.io/cocoapods/v/PagedUITableViewController.svg?style=flat)](http://cocoapods.org/pods/PagedUITableViewController)
 [![License](https://img.shields.io/cocoapods/l/PagedUITableViewController.svg?style=flat)](http://cocoapods.org/pods/PagedUITableViewController)
 [![Platform](https://img.shields.io/cocoapods/p/PagedUITableViewController.svg?style=flat)](http://cocoapods.org/pods/PagedUITableViewController)

@@ -1,0 +1,16 @@
+PODS:
+  - PagedUITableViewController (0.0.2)
+
+DEPENDENCIES:
+  - PagedUITableViewController (from `../`)
+
+EXTERNAL SOURCES:
+  PagedUITableViewController:
+    :path: ../
+
+SPEC CHECKSUMS:
+  PagedUITableViewController: a6275d9f21510569cd99bc252565bb7cd42d6f90
+
+PODFILE CHECKSUM: fb08c49e1f87d02ffd43e04cb9fea3c6d9d75fe6
+
+COCOAPODS: 1.1.0.rc.2

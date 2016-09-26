@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol PagedUITableViewDelegate {
+public protocol PagedUITableViewDelegate {
     func resetDataSource()
     func cancelCurrentRequest()
 }

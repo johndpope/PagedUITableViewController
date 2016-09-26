@@ -7,7 +7,7 @@
 //
 
 import UIKit
-//import PagedUITableViewController
+import PagedUITableViewController
 
 class TableViewController: PagedUITableViewController {
     

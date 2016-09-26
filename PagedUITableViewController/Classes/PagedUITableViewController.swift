@@ -37,11 +37,11 @@ private extension UITableView {
 
 extension PagedUITableViewController: PagedUITableViewActionsDelegate {
     
-    func reloadData() {
+    public func reloadData() {
         downloadNextDataPage(true)
     }
     
-    func deleteItem(atIndexPath indexPath: NSIndexPath) {
+    public func deleteItem(atIndexPath indexPath: NSIndexPath) {
         if let currentItems = data[indexPath.section] {
             data[indexPath.section] = currentItems - 1
             if data[indexPath.section] == 0 {
@@ -56,11 +56,11 @@ extension PagedUITableViewController: PagedUITableViewActionsDelegate {
 
 
 
-class PagedUITableViewController: UITableViewController {
+public class PagedUITableViewController: UITableViewController {
     
-    var pagedDelegate: PagedUITableViewDelegate?
-    var pagedDataSource: PagedUITableViewDataSource?
-    var pagedActionsDelegate: PagedUITableViewActionsDelegate!
+    public var pagedDelegate: PagedUITableViewDelegate?
+    public var pagedDataSource: PagedUITableViewDataSource?
+    public var pagedActionsDelegate: PagedUITableViewActionsDelegate!
     
     private var downloading = false
     private var currentPage = 0
@@ -68,12 +68,12 @@ class PagedUITableViewController: UITableViewController {
     
     private var data = [Int: Int]()
     
-    override func awakeFromNib() {
+    override public func awakeFromNib() {
         pagedActionsDelegate = self
         super.awakeFromNib()
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         downloadNextDataPage()
         self.refreshControl = UIRefreshControl()
@@ -83,7 +83,7 @@ class PagedUITableViewController: UITableViewController {
         }
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override public func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.deselectRowsCoordinated(self.transitionCoordinator())
     }
@@ -158,7 +158,7 @@ class PagedUITableViewController: UITableViewController {
     
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if downloading {
             return data.count + 1
         } else {
@@ -166,7 +166,7 @@ class PagedUITableViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if downloading && section == data.count {
             // Loading cell
             return 1
@@ -176,7 +176,7 @@ class PagedUITableViewController: UITableViewController {
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if downloading && indexPath.section == data.count {
             // Loading cell
             return pagedDataSource?.loadingCellForPagedTableView(tableView, forIndexPath: indexPath) ?? UITableViewCell()
@@ -186,7 +186,7 @@ class PagedUITableViewController: UITableViewController {
     }
     
     // MARK: UITableViewDelegate
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    override public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == self.currentPage - 1 && self.currentPage < self.totalPages {
             downloadNextDataPage()
         }

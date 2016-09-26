@@ -1,0 +1,6 @@
+framework module PagedUITableViewController {
+  umbrella header "PagedUITableViewController-umbrella.h"
+
+  export *
+  module * { export * }
+}

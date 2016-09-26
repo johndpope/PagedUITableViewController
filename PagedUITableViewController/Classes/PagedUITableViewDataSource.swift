@@ -9,7 +9,7 @@
 
 import UIKit
 
-protocol PagedUITableViewDataSource {
+public protocol PagedUITableViewDataSource {
     func downloadData(page page: Int, onSuccess: (pageSize: Int, data: [AnyObject], totalItems: Int) -> (), onError: (delayTime: NSTimeInterval) -> ())
     func appendData(data: [AnyObject], forPage page: Int)
     

@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol PagedUITableViewActionsDelegate {
+public protocol PagedUITableViewActionsDelegate {
     func reloadData()
     func deleteItem(atIndexPath indexPath: NSIndexPath)
 }

@@ -87,6 +87,13 @@ public class PagedUITableViewController: UITableViewController {
         super.viewWillAppear(animated)
         tableView.deselectRowsCoordinated(self.transitionCoordinator())
     }
+
+    override public func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if let refreshControl = self.refreshControl {
+            refreshControl.superview?.sendSubviewToBack(refreshControl)
+        }
+    }
     
     private func downloadNextDataPage(resetDatasource: Bool = false) {
         if resetDatasource {

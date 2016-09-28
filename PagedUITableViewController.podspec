@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'PagedUITableViewController'
-  s.version          = '0.0.3'
+  s.version          = '0.0.4'
   s.summary          = 'Automatically manage pagination with custom loading cell that allows pagination across network calls with few code lines.'
   s.description      = <<-DESC
 UITableViewController subclass that automatically manages pagination with custom loading cell and network request delegation on your current controller.

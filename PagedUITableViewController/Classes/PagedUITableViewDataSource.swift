@@ -10,8 +10,8 @@
 import UIKit
 
 public protocol PagedUITableViewDataSource {
-    func downloadData(page page: Int, onSuccess: (pageSize: Int, data: [AnyObject], totalItems: Int) -> (), onError: (delayTime: NSTimeInterval) -> ())
-    func appendData(data: [AnyObject], forPage page: Int)
+    func downloadData(offset offset: Int, onSuccess: (pageSize: Int, data: [AnyObject], totalItems: Int) -> (), onError: (delayTime: NSTimeInterval) -> ())
+    func appendData(data: [AnyObject], forOffset offset: Int)
     
     func numberOfSectionsInPagedTableView(pagedTableView: UITableView) -> Int
     func pagedTableView(pagedTableView: UITableView, numberOfRowsInPagedSection section: Int) -> Int

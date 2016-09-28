@@ -1,6 +1,6 @@
 //
 //  PagedUITableViewController.swift
-//  
+//
 //
 //  Created by Sergio Garcia on 9/9/16.
 //  Copyright © 2016 Sergio Garcia. All rights reserved.
@@ -14,7 +14,7 @@ private extension UIViewController {
         return self.isViewLoaded() && self.view.window != nil
     }
     
-    func delayMainQueue(delay:Double, actions:()->()) {
+    func delayMainQueue(delay: Double, actions: ()->()) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))),
                        dispatch_get_main_queue(), actions)
     }
@@ -44,6 +44,7 @@ extension PagedUITableViewController: PagedUITableViewActionsDelegate {
     public func deleteItem(atIndexPath indexPath: NSIndexPath) {
         if let currentItems = data[indexPath.section] {
             data[indexPath.section] = currentItems - 1
+            currentOffset -= 1
             if data[indexPath.section] == 0 {
                 data.removeValueForKey(indexPath.section)
             }
@@ -63,8 +64,9 @@ public class PagedUITableViewController: UITableViewController {
     public var pagedActionsDelegate: PagedUITableViewActionsDelegate!
     
     private var downloading = false
-    private var currentPage = 0
-    private var totalPages: Int?
+    private var currentOffset = 0
+    private var pageSize = 0
+    private var totalItems: Int?
     
     private var data = [Int: Int]()
     
@@ -82,12 +84,12 @@ public class PagedUITableViewController: UITableViewController {
             self.tableView.addSubview(refresh)
         }
     }
-
+    
     override public func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.deselectRowsCoordinated(self.transitionCoordinator())
     }
-
+    
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if let refreshControl = self.refreshControl {
@@ -100,18 +102,16 @@ public class PagedUITableViewController: UITableViewController {
             pagedDelegate?.cancelCurrentRequest()
             downloading = false
             self.refreshControl?.beginRefreshing()
-            currentPage = 0
-            totalPages = nil
+            currentOffset = 0
+            totalItems = nil
         }
         
         guard !downloading else {
-            print("Download in progress.")
             return
         }
         
-        currentPage += 1
-        if let totalPages = totalPages {
-            guard currentPage <= totalPages else {
+        if let totalItems = totalItems {
+            guard currentOffset < totalItems else {
                 print("All pages downloaded.")
                 return
             }
@@ -125,7 +125,7 @@ public class PagedUITableViewController: UITableViewController {
     }
     
     private func downloadData() {
-        pagedDataSource?.downloadData(page: currentPage, onSuccess: { (pageSize, data, totalItems) in
+        pagedDataSource?.downloadData(offset: currentOffset, onSuccess: { (pageSize, data, totalItems) in
             if self.refreshControl?.refreshing ?? false {
                 dispatch_async(dispatch_get_main_queue()) {
                     self.refreshControl?.endRefreshing()
@@ -133,13 +133,13 @@ public class PagedUITableViewController: UITableViewController {
                 self.data.removeAll()
                 self.pagedDelegate?.resetDataSource()
             }
-            self.pagedDataSource?.appendData(data, forPage: self.currentPage)
-            if self.totalPages == nil {
-                let total = Double(totalItems) / Double(pageSize)
-                self.totalPages = Int(ceil(total))
-            }
+            self.totalItems = totalItems
             
-            self.data[self.currentPage - 1] = data.count
+            self.pagedDataSource?.appendData(data, forOffset: self.currentOffset)
+            
+            self.data[self.currentOffset / pageSize] = data.count
+            self.currentOffset += data.count
+            
             self.downloading = false
             dispatch_async(dispatch_get_main_queue()) {
                 self.tableView.reloadData()
@@ -155,16 +155,15 @@ public class PagedUITableViewController: UITableViewController {
                             self.refreshControl?.endRefreshing()
                         }
                     }
-                    self.currentPage -= 1
                     self.downloading = false
                     self.tableView.reloadData()
                 }
         })
     }
-   
+    
     
     // MARK: - Table view data source
-
+    
     override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if downloading {
             return data.count + 1
@@ -172,7 +171,7 @@ public class PagedUITableViewController: UITableViewController {
             return data.count
         }
     }
-
+    
     override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if downloading && section == data.count {
             // Loading cell
@@ -181,7 +180,7 @@ public class PagedUITableViewController: UITableViewController {
             return data[section] ?? 0
         }
     }
-
+    
     
     override public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if downloading && indexPath.section == data.count {
@@ -194,7 +193,8 @@ public class PagedUITableViewController: UITableViewController {
     
     // MARK: UITableViewDelegate
     override public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == self.currentPage - 1 && self.currentPage < self.totalPages {
+        if indexPath.section == tableView.numberOfSections - 1
+            && self.currentOffset < self.totalItems {
             downloadNextDataPage()
         }
     }

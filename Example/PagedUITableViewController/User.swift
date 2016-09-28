@@ -45,8 +45,9 @@ class User {
 }
 
 extension User {
-    static func users(page page: Int, onSuccess: (pageSize: Int, data: [AnyObject], totalItems: Int) -> (), onError: (delayTime: NSTimeInterval) -> ()) -> NSURLSessionTask {
-        let url = NSURL(string: "http://reqres.in/api/users?page=\(page)")
+    static func users(offset offset: Int, onSuccess: (pageSize: Int, data: [AnyObject], totalItems: Int) -> (), onError: (delayTime: NSTimeInterval) -> ()) -> NSURLSessionTask {
+        let pageSize = 3
+        let url = NSURL(string: "http://reqres.in/api/users?page=\(Int(offset / pageSize))")
         let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
             guard let data = data
                 else {

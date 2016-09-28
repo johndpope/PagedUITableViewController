@@ -32,8 +32,8 @@ class TableViewController: PagedUITableViewController {
         }
     }
     
-    private func downloadUsers(page page: Int, onSuccess: (pageSize: Int, data: [AnyObject], totalItems: Int) -> (), onError: (delayTime: NSTimeInterval) -> ()) {
-        currentRequest = User.users(page: page, onSuccess: onSuccess, onError: onError)
+    private func downloadUsers(offset offset: Int, onSuccess: (pageSize: Int, data: [AnyObject], totalItems: Int) -> (), onError: (delayTime: NSTimeInterval) -> ()) {
+        currentRequest = User.users(offset: offset, onSuccess: onSuccess, onError: onError)
     }
     
     private func setImageFromUrl(urlImage: String, forImageView imageView: UIImageView) {
@@ -56,11 +56,11 @@ class TableViewController: PagedUITableViewController {
 
 extension TableViewController: PagedUITableViewDataSource {
     
-    func downloadData(page page: Int, onSuccess: (pageSize: Int, data: [AnyObject], totalItems: Int) -> (), onError: (delayTime: NSTimeInterval) -> ()) {
-        self.downloadUsers(page: page, onSuccess: onSuccess, onError: onError)
+    func downloadData(offset offset: Int, onSuccess: (pageSize: Int, data: [AnyObject], totalItems: Int) -> (), onError: (delayTime: NSTimeInterval) -> ()) {
+        self.downloadUsers(offset: offset, onSuccess: onSuccess, onError: onError)
     }
     
-    func appendData(data: [AnyObject], forPage page: Int) {
+    func appendData(data: [AnyObject], forOffset offset: Int) {
         self.dataSource.append(data as? [User] ?? [])
     }
     

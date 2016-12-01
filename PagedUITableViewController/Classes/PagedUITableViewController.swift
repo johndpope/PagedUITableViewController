@@ -42,20 +42,12 @@ extension PagedUITableViewController: PagedUITableViewActionsDelegate {
     }
     
     public func deleteItem(atIndexPath indexPath: NSIndexPath) {
-        if let currentItems = data[indexPath.section] {
-            data[indexPath.section] = currentItems - 1
-            currentOffset -= 1
-            if data[indexPath.section] == 0 {
-                data.removeValueForKey(indexPath.section)
-            }
-            dispatch_async(dispatch_get_main_queue(), {
-                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-            })
-        }
+        currentOffset -= 1
+        dispatch_async(dispatch_get_main_queue(), {
+            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        })
     }
 }
-
-
 
 public class PagedUITableViewController: UITableViewController {
     
@@ -67,8 +59,6 @@ public class PagedUITableViewController: UITableViewController {
     private var currentOffset = 0
     private var pageSize = 0
     private var totalItems: Int?
-    
-    private var data = [Int: Int]()
     
     override public func awakeFromNib() {
         pagedActionsDelegate = self
@@ -130,14 +120,12 @@ public class PagedUITableViewController: UITableViewController {
                 dispatch_async(dispatch_get_main_queue()) {
                     self.refreshControl?.endRefreshing()
                 }
-                self.data.removeAll()
                 self.pagedDelegate?.resetDataSource()
             }
             self.totalItems = totalItems
             
             self.pagedDataSource?.appendData(data, forOffset: self.currentOffset)
             
-            self.data[self.currentOffset / pageSize] = data.count
             self.currentOffset += data.count
             
             self.downloading = false
@@ -165,25 +153,28 @@ public class PagedUITableViewController: UITableViewController {
     // MARK: - Table view data source
     
     override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        var sections = pagedDataSource?.numberOfSectionsInPagedTableView(tableView) ?? 0
         if downloading {
-            return data.count + 1
-        } else {
-            return data.count
+            return sections + 1
         }
+        return sections
     }
     
     override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if downloading && section == data.count {
+        let sections = pagedDataSource?.numberOfSectionsInPagedTableView(tableView) ?? 0
+        if downloading && section == sections {
             // Loading cell
             return 1
         } else {
-            return data[section] ?? 0
+            let rows = pagedDataSource?.pagedTableView(tableView, numberOfRowsInPagedSection: section) ?? 0
+            return rows
         }
     }
     
     
     override public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if downloading && indexPath.section == data.count {
+        let sections = pagedDataSource?.numberOfSectionsInPagedTableView(tableView) ?? 0
+        if downloading && indexPath.section == sections {
             // Loading cell
             return pagedDataSource?.loadingCellForPagedTableView(tableView, forIndexPath: indexPath) ?? UITableViewCell()
         } else {

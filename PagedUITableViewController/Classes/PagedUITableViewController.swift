@@ -149,11 +149,9 @@ public class PagedUITableViewController: UITableViewController {
         })
     }
     
-    
     // MARK: - Table view data source
-    
     override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        var sections = pagedDataSource?.numberOfSectionsInPagedTableView(tableView) ?? 0
+        let sections = pagedDataSource?.numberOfSectionsInPagedTableView(tableView) ?? 0
         if downloading {
             return sections + 1
         }
